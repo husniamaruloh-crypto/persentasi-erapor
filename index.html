@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sosialisasi e-Rapor SMP Versi 2025.2 - SMPN 2 Serang Baru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        .slide-enter {
+            animation: slideFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes slideFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(0.99);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 h-screen flex flex-col select-none">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="bg-gradient-to-r from-blue-950 via-blue-900 to-indigo-900 text-white shadow-lg z-30 shrink-0">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex items-center justify-between gap-2">
+            <!-- Brand & Presenter Info -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition text-white" title="Daftar Slide">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-amber-400 text-blue-950 font-black flex items-center justify-center text-lg shadow-inner">
+                        eR
+                    </div>
+                    <div class="hidden sm:block">
+                        <h1 class="text-sm font-bold leading-tight tracking-wide">SOSIALISASI e-RAPOR SMP 2025.2</h1>
+                        <p class="text-[11px] text-blue-200">SMP Negeri 2 Serang Baru • Kab. Bekasi</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Role Filter Pills -->
+            <div class="hidden lg:flex items-center bg-blue-950/60 p-1 rounded-xl border border-blue-700/50 text-xs font-medium">
+                <button onclick="jumpToSection(0)" id="tab-all" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white shadow transition">Semua</button>
+                <button onclick="jumpToSection(3)" id="tab-op" class="px-3 py-1.5 rounded-lg text-blue-200 hover:text-white transition">1. Operator & Admin</button>
+                <button onclick="jumpToSection(10)" id="tab-guru" class="px-3 py-1.5 rounded-lg text-blue-200 hover:text-white transition">2. Guru Mapel</button>
+                <button onclick="jumpToSection(15)" id="tab-walas" class="px-3 py-1.5 rounded-lg text-blue-200 hover:text-white transition">3. Wali Kelas</button>
+                <button onclick="jumpToSection(22)" id="tab-tim" class="px-3 py-1.5 rounded-lg text-blue-200 hover:text-white transition">Koordinasi</button>
+            </div>
+
+            <!-- Action Buttons: Live App Launcher & Fullscreen -->
+            <div class="flex items-center gap-2">
+                <button onclick="openLiveAppModal()" class="flex items-center gap-2 bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-blue-950 font-bold text-xs sm:text-sm px-3.5 py-2 rounded-xl shadow-md hover:shadow-lg transition transform active:scale-95">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span>Buka e-Rapor Guru</span>
+                    <span class="hidden md:inline-block bg-blue-950/15 px-1.5 py-0.5 rounded text-[10px] font-mono">:8534</span>
+                </button>
+                <button onclick="toggleFullscreen()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition text-white hidden sm:flex" title="Layar Penuh (F)">
+                    <i class="fas fa-expand" id="fs-icon"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-blue-950 h-1">
+            <div id="progress-bar" class="bg-amber-400 h-1 transition-all duration-300" style="width: 4%"></div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT WORKSPACE -->
+    <div class="flex-1 flex overflow-hidden relative">
+
+        <!-- BACKDROP OVERLAY FOR SIDEBAR -->
+        <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-[1px] z-20 hidden transition-opacity"></div>
+
+        <!-- SIDEBAR SLIDE NAVIGATOR (Hidden by default on all screens) -->
+        <aside id="sidebar" class="w-72 bg-white border-r border-slate-200 flex flex-col z-30 transition-transform duration-300 fixed top-[57px] bottom-0 left-0 -translate-x-full shadow-2xl">
+            <div class="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Daftar Materi (26 Slide)</span>
+                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200/70 transition" title="Tutup Daftar Slide">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="slide-list" class="flex-1 overflow-y-auto p-2.5 space-y-1 text-xs">
+                <!-- Populated by JS -->
+            </div>
+            <div class="p-3 border-t border-slate-100 bg-blue-50/70">
+                <a href="http://localhost:8534/dashboard/guru" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-3 rounded-xl text-xs transition shadow-sm">
+                    <i class="fas fa-rocket"></i> Tab Baru: localhost:8534
+                </a>
+            </div>
+        </aside>
+
+        <!-- SLIDE STAGE -->
+        <main id="slide-stage" class="w-full flex-1 overflow-y-auto p-3 sm:p-6 md:p-8 flex flex-col items-center justify-center bg-gradient-to-br from-slate-100 via-blue-50/40 to-slate-200 relative">
+            <div id="slide-container" class="w-full max-w-7xl bg-white rounded-3xl shadow-xl border border-slate-200/80 overflow-hidden min-h-[520px] flex flex-col justify-between slide-enter">
+                <!-- Dynamic Slide Content Rendered Here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- BOTTOM PRESENTATION CONTROLS -->
+    <footer class="bg-white border-t border-slate-200 px-4 py-2.5 shrink-0 z-20">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <div class="flex items-center gap-2 text-xs text-slate-500">
+                <span class="font-semibold text-slate-700" id="slide-counter">Slide 1 / 26</span>
+                <span class="hidden sm:inline">•</span>
+                <span class="hidden sm:inline truncate max-w-xs" id="slide-category-label">Sampul Presentasi</span>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex items-center gap-2">
+                <button onclick="prevSlide()" id="btn-prev" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-40 text-slate-700 font-semibold text-xs sm:text-sm flex items-center gap-2 transition">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Sebelumnya</span>
+                </button>
+                <button onclick="nextSlide()" id="btn-next" class="px-5 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 disabled:opacity-40 text-white font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-sm transition">
+                    <span>Berikutnya</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Quick URL Copy -->
+            <div class="hidden md:flex items-center gap-2">
+                <div class="flex items-center bg-slate-100 border border-slate-200 rounded-xl px-2.5 py-1 text-xs font-mono text-slate-600">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+                    http://localhost:8534/dashboard/guru
+                </div>
+                <button onclick="copyEraporUrl()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs transition" title="Salin Alamat e-Rapor">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL LAUNCHER / LIVE PREVIEW FOR LOCALHOST:8534 -->
+    <div id="live-app-modal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-white w-full max-w-6xl h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-300 animate-fadeIn">
+            <!-- Modal Header -->
+            <div class="bg-blue-950 text-white px-4 py-3 flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                    <span class="font-bold text-sm">Praktek Langsung Aplikasi e-Rapor SMP</span>
+                    <code class="bg-blue-900 text-amber-300 px-2.5 py-0.5 rounded-lg text-xs border border-blue-700">http://localhost:8534/dashboard/guru</code>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="http://localhost:8534/dashboard/guru" target="_blank" rel="noopener noreferrer" class="bg-amber-400 hover:bg-amber-300 text-blue-950 font-bold px-3.5 py-1.5 rounded-xl text-xs flex items-center gap-1.5 shadow transition">
+                        <i class="fas fa-external-link-alt"></i> Buka di Tab Penuh (Disarankan)
+                    </a>
+                    <button onclick="reloadIframe()" class="bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-xl text-xs transition" title="Muat Ulang">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button onclick="closeLiveAppModal()" class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition">
+                        <i class="fas fa-times"></i> Tutup
+                    </button>
+                </div>
+            </div>
+
+            <!-- Info Banner -->
+            <div class="bg-amber-50 border-b border-amber-200 px-4 py-2 text-xs text-amber-900 flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-info-circle text-amber-600"></i>
+                    <span>Pastikan layanan <strong>e-Rapor SMP</strong> sudah berjalan di komputer lokal (port <strong>8534</strong>). Jika tampilan di bawah diblokir oleh kebijakan browser/X-Frame-Options, klik tombol <strong>"Buka di Tab Penuh"</strong> di pojok kanan atas.</span>
+                </div>
+                <button onclick="copyEraporUrl()" class="text-blue-700 hover:underline font-semibold shrink-0">
+                    <i class="fas fa-copy"></i> Salin URL
+                </button>
+            </div>
+
+            <!-- Embedded Iframe Container -->
+            <div class="flex-1 bg-slate-100 relative">
+                <iframe id="erapor-iframe" src="about:blank" class="w-full h-full border-0" title="Aplikasi e-Rapor SMP"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-16 right-4 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
+        <i class="fas fa-check-circle text-emerald-400"></i>
+        <span id="toast-msg">Berhasil disalin!</span>
+    </div>
+
+    <script>
+        // ==========================================
+        // DATA SLIDE LENGKAP (26 SLIDE SESUAI FILE)
+        // ==========================================
+        const slidesData = [
+            {
+                id: 0,
+                badge: "SAMPUL PRESENTASI",
+                category: "Sampul",
+                title: "Sosialisasi Aplikasi e-Rapor SMP Versi 2025.2",
+                subtitle: "Dinas Pendidikan Kabupaten Bekasi • Tahun 2026",
+                type: "cover",
+                presenter: "Husni Amaruloh, S.TP.",
+                school: "SMP Negeri 2 Serang Baru",
+                highlights: [
+                    "Panduan Praktis Alur Kerja Operator, Guru Mapel, dan Wali Kelas",
+                    "Integrasi Webservice Dapodik ke e-Rapor SMP 2025.2",
+                    "Simulasi & Praktek Langsung di http://localhost:8534/dashboard/guru"
+                ]
+            },
+            {
+                id: 1,
+                badge: "PANDUAN OPERASIONAL SEKOLAH",
+                category: "Pendahuluan",
+                title: "Alur Kerja Operator • Guru Mapel • Wali Kelas",
+                subtitle: "Panduan praktik penggunaan e-Rapor SMP Versi 2025.2 berbasis langkah dan tampilan resmi.",
+                type: "overview-cards",
+                cards: [
+                    {
+                        icon: "fa-server",
+                        color: "blue",
+                        role: "1. Operator & Admin",
+                        desc: "Menyiapkan data master Dapodik, konfigurasi Webservice, penarikan data, serta manajemen akun dan referensi lokal."
+                    },
+                    {
+                        icon: "fa-chalkboard-teacher",
+                        color: "amber",
+                        role: "2. Guru Mata Pelajaran",
+                        desc: "Mengelola Tujuan Pembelajaran (TP), menginput nilai akhir rapor (0-100), serta memverifikasi deskripsi capaian."
+                    },
+                    {
+                        icon: "fa-user-check",
+                        color: "emerald",
+                        role: "3. Wali Kelas",
+                        desc: "Melengkapi data siswa, rekap kehadiran, nilai ekstrakurikuler, catatan wali kelas, kenaikan kelas, dan cetak rapor."
+                    }
+                ]
+            },
+            {
+                id: 2,
+                badge: "01 • PEMBUKA",
+                category: "Pendahuluan",
+                title: "Tiga Peran, Satu Alur Kerja",
+                subtitle: "Siapa mengerjakan apa agar proses rapor berjalan runtut?",
+                type: "standard",
+                points: [
+                    { title: "Operator Dapodik", text: "Menyiapkan data sumber di Dapodik (Siswa, PTK, Rombel, Pembelajaran, Ekskul) dan membuat Webservice." },
+                    { title: "Administrator e-Rapor", text: "Menarik serta menyesuaikan referensi lokal, logo/kop sekolah, tanggal rapor, dan mengelola pengguna." },
+                    { title: "Guru Mata Pelajaran", text: "Menginput Tujuan Pembelajaran (TP), nilai rapor, dan memeriksa deskripsi capaian kompetensi." },
+                    { title: "Wali Kelas", text: "Melengkapi data kelas, kehadiran, nilai ekskul, catatan wali kelas, dan membantu cetak rapor." }
+                ],
+                visualType: "network",
+                note: "Penting: Operator Dapodik dan Administrator e-Rapor adalah peran yang berbeda dalam panduan resmi, meskipun di sekolah sering dipegang oleh orang yang sama."
+            },
+            {
+                id: 3,
+                badge: "02 • PETA PROSES",
+                category: "Alur Utama",
+                title: "Urutan Kerja dari Data hingga Rapor",
+                subtitle: "Alur ringkas berdasarkan integrasi Dapodik dan e-Rapor SMP 2025.2.",
+                type: "roadmap",
+                steps: [
+                    { num: "01", title: "DAPODIK", desc: "Data siswa, PTK, rombel, pembelajaran, ekskul" },
+                    { num: "02", title: "WEBSERVICE", desc: "Hubungkan Dapodik dengan server e-Rapor" },
+                    { num: "03", title: "ADMIN e-RAPOR", desc: "Ambil data, cek referensi, siapkan akun pengguna" },
+                    { num: "04", title: "GURU MAPEL", desc: "Input TP → Input Nilai → Cek Deskripsi" },
+                    { num: "05", title: "WALI KELAS", desc: "Kelengkapan → Cek Penilaian → Cetak Rapor" },
+                    { num: "06", title: "KIRIM NILAI", desc: "Kirim nilai yang sesuai referensi ke Dapodik" }
+                ]
+            },
+            {
+                id: 4,
+                badge: "03 • OPERATOR SEKOLAH",
+                category: "Operator & Admin",
+                title: "Bedakan Operator Dapodik dan Admin e-Rapor",
+                subtitle: "Memahami batas kewenangan agar tidak terjadi kesalahan input data.",
+                type: "comparison",
+                leftTitle: "Operator Dapodik",
+                leftIcon: "fa-database",
+                leftItems: [
+                    "Melengkapi seluruh data master di aplikasi Dapodik.",
+                    "Membuat dan mengelola token Webservice di Dapodik.",
+                    "Melakukan perbaikan jika ada kesalahan nama siswa, NISN, PTK, atau anggota rombel."
+                ],
+                rightTitle: "Administrator e-Rapor",
+                rightIcon: "fa-cogs",
+                rightItems: [
+                    "Mengambil data dari Dapodik ke e-Rapor melalui Webservice.",
+                    "Membuat dan mendistribusikan akun pengguna (Guru/Siswa).",
+                    "Mengecek referensi Dapodik dan mengatur referensi lokal (kop, tanggal rapor, TTD)."
+                ],
+                note: "Aturan Emas: Jangan menginput ulang di e-Rapor data master yang seharusnya berasal dari Dapodik!"
+            },
+            {
+                id: 5,
+                badge: "04 • PERAN 1: OPERATOR",
+                category: "Operator & Admin",
+                title: "Checklist Data Sumber di Dapodik",
+                subtitle: "Pastikan data master siap sebelum proses penarikan ke e-Rapor.",
+                type: "checklist-slide",
+                items: [
+                    "Lengkapi data peserta didik (NIS, NISN, Nama, Biodata) dan PTK.",
+                    "Lengkapi rombongan belajar, anggota rombel, dan penetapan wali kelas.",
+                    "Lengkapi data pembelajaran dan mata pelajaran yang diampu tiap guru.",
+                    "Lengkapi data ekstrakurikuler beserta pembina dan anggota ekstrakurikuler.",
+                    "Periksa kembali konsistensi data sebelum membuat Webservice."
+                ],
+                visualType: "dapodik-check"
+            },
+            {
+                id: 6,
+                badge: "05 • PERAN 1: OPERATOR",
+                category: "Operator & Admin",
+                title: "Membuat Web Service pada Dapodik",
+                subtitle: "Contoh panduan: Dapodik dan e-Rapor berada pada jaringan LAN / satu server.",
+                type: "standard",
+                points: [
+                    { title: "1. Buka Pengaturan Web Service", text: "Masuk ke aplikasi Dapodik → menu Pengaturan → klik tombol Web Service." },
+                    { title: "2. Tambah Koneksi Baru", text: "Klik Tambah untuk membuat data webservice baru." },
+                    { title: "3. Isi Nama & IP Address", text: "Isi nama aplikasi (misal: e-RaporSMP) dan masukkan IP Address server e-Rapor sesuai topologi jaringan (contoh: 192.168.1.20 atau localhost)." },
+                    { title: "4. Simpan & Salin Token/Key", text: "Key dibuat otomatis oleh Dapodik; klik Simpan lalu klik Salin Token untuk dipasangkan di e-Rapor." }
+                ],
+                visualType: "webservice-dapodik",
+                note: "Ikuti IP sesuai kondisi server sekolah; contoh pada buku panduan bukan nilai universal."
+            },
+            {
+                id: 7,
+                badge: "06 • PERAN 1: OPERATOR + ADMIN",
+                category: "Operator & Admin",
+                title: "Pasangkan Web Service di e-Rapor",
+                subtitle: "Konfigurasi harus cocok di kedua aplikasi agar sinkronisasi berjalan lancar.",
+                type: "standard",
+                points: [
+                    { title: "1. Login Administrator", text: "Login ke aplikasi e-Rapor SMP sebagai Administrator." },
+                    { title: "2. Buka Menu Web Service Dapodik", text: "Pilih menu Web Service Dapodik, lalu klik Edit atau Tambah Data Webservice." },
+                    { title: "3. Lengkapi Form Konfigurasi", text: "Isi Nama Aplikasi, IP Server e-Rapor, IP Server Dapodik, Key/Token dari Dapodik, dan NPSN Sekolah." },
+                    { title: "4. Simpan & Tes Koneksi", text: "Klik Simpan Perubahan, lalu klik tombol Tes Koneksi hingga muncul notifikasi Sukses." }
+                ],
+                visualType: "webservice-erapor",
+                note: "Jika tes koneksi gagal, cocokkan kembali IP/Key dan pastikan Firewall pada server Dapodik tidak memblokir port."
+            },
+            {
+                id: 8,
+                badge: "07 • PERAN 1: OPERATOR + ADMIN",
+                category: "Operator & Admin",
+                title: "Tarik Data Dapodik ke e-Rapor",
+                subtitle: "Setelah koneksi berhasil, data master dapat diambil secara bertahap.",
+                type: "standard",
+                points: [
+                    { title: "1. Buka Menu Ambil Data Dapodik", text: "Klik menu Ambil Data Dapodik pada sidebar Administrator." },
+                    { title: "2. Pilih Semester Aktif", text: "Tentukan semester yang akan diakses/diambil datanya (misal: 2025/2026 Ganjil atau Genap)." },
+                    { title: "3. Jalankan Proses Bertahap", text: "Mulai dari Tes Koneksi Dapodik, lanjutkan Ambil Data Semester, lalu Ambil Seluruh Data." },
+                    { title: "4. Verifikasi Hasil Tarikan", text: "Periksa jumlah data sekolah, guru, siswa, rombel, pembelajaran, dan ekstrakurikuler." }
+                ],
+                visualType: "ambil-data"
+            },
+            {
+                id: 9,
+                badge: "08 • PERAN 1: OPERATOR",
+                category: "Operator & Admin",
+                title: "Jika Data Tidak Sesuai, Perbaiki dari Sumbernya",
+                subtitle: "Hindari memperbaiki data master di tempat yang salah.",
+                type: "standard",
+                points: [
+                    { title: "Identitas Siswa / PTK Keliru", text: "Nama, ejaan, NISN, atau NIP keliru → wajib diperbaiki di aplikasi Dapodik." },
+                    { title: "Rombel / Pembelajaran Belum Muncul", text: "Anggota rombel, wali kelas, atau jam mengajar belum sesuai → perbaiki di Dapodik." },
+                    { title: "Tarik Ulang Data", text: "Setelah koreksi di Dapodik disimpan, lakukan pengambilan data kembali di e-Rapor." },
+                    { title: "Koordinasi Tim", text: "Koordinasikan dengan Administrator untuk pengecekan referensi lokal dan akun login guru." }
+                ],
+                visualType: "sync-loop"
+            },
+            {
+                id: 10,
+                badge: "09 • PERAN 1: ADMIN e-RAPOR",
+                category: "Operator & Admin",
+                title: "Checklist Administrator Sebelum Guru Mulai",
+                subtitle: "Persiapan lingkungan aplikasi e-Rapor sebelum dibagikan ke Bapak/Ibu Guru.",
+                type: "checklist-slide",
+                items: [
+                    "Bersama Operator melakukan setting Webservice dan menarik data Dapodik terbaru.",
+                    "Membuat/menggenerate akun pengguna untuk seluruh Guru, Wali Kelas, dan Siswa.",
+                    "Mengecek referensi Dapodik dan menyesuaikan referensi lokal yang diperlukan.",
+                    "Mengunggah Logo Kabupaten/Sekolah, Kop Rapor, Tanda Tangan Kepala Sekolah, dan Tanggal Rapor.",
+                    "Memantau status/perkembangan penilaian serta melakukan backup database secara berkala."
+                ],
+                visualType: "admin-prep"
+            },
+            {
+                id: 11,
+                badge: "10 • PERAN 2: GURU MAPEL",
+                category: "Guru Mapel",
+                title: "Mulai dari Dashboard Guru",
+                subtitle: "Dashboard memperlihatkan ringkasan dan status pekerjaan guru secara real-time.",
+                type: "standard",
+                points: [
+                    { title: "1. Akses Browser & Login", text: "Buka browser (Chrome/Edge) menuju alamat server e-Rapor (contoh praktek: http://localhost:8534/dashboard/guru) dan login menggunakan akun guru." },
+                    { title: "2. Cek Status Kerja Guru", text: "Periksa tabel Rincian Kerja Utama Guru dan Wali Kelas (status 'Sudah dikerjakan' vs 'Belum dikerjakan')." },
+                    { title: "3. Verifikasi Rombel & Mapel", text: "Pastikan seluruh kelas dan mata pelajaran yang diampu sudah tampil dengan benar." },
+                    { title: "4. Gunakan sebagai Kontrol", text: "Jadikan indikator persentase progres di dashboard sebagai kontrol sebelum finalisasi." }
+                ],
+                visualType: "guru-dashboard",
+                hasPracticeBtn: true
+            },
+            {
+                id: 12,
+                badge: "11 • PERAN 2: GURU MAPEL",
+                category: "Guru Mapel",
+                title: "Langkah 1 — Kelola Tujuan Pembelajaran (TP)",
+                subtitle: "TP menjadi dasar penyusunan deskripsi ketercapaian kompetensi pada rapor.",
+                type: "standard",
+                points: [
+                    { title: "1. Buka Menu Tujuan Pembelajaran", text: "Pilih menu Tujuan Pembelajaran, lalu pilih Mata Pelajaran yang diampu." },
+                    { title: "2. Tambah / Edit atau Import TP", text: "Klik Tambah/Edit TP (atau gunakan Import TP via format Excel resmi) dan lengkapi Tingkat, Fase, Semester, serta teks TP." },
+                    { title: "3. Aturan Penulisan TP (Sangat Penting!)", text: "Awali dengan HURUF KECIL dan langsung tulis kompetensi & konten, TANPA frasa 'Peserta didik dapat'." },
+                    { title: "4. Efisiensi Tim MGMP Sekolah", text: "Entri TP cukup dilakukan oleh SATU guru mapel yang mengajar pada tingkat yang sama (maksimal 10 TP per proses)." }
+                ],
+                visualType: "tp-demo",
+                hasPracticeBtn: true
+            },
+            {
+                id: 13,
+                badge: "12 • PERAN 2: GURU MAPEL",
+                category: "Guru Mapel",
+                title: "Langkah 2 — Input Nilai Rapor",
+                subtitle: "Nilai akhir dan checklist ketercapaian TP membentuk nilai serta deskripsi rapor.",
+                type: "standard",
+                points: [
+                    { title: "1. Buka Menu Input Nilai Rapor", text: "Klik Input Nilai Rapor → pilih submenu Input Nilai Rapor (atau Import Nilai Rapor)." },
+                    { title: "2. Pilih Kelas & Mata Pelajaran", text: "Tentukan kelas dan mapel untuk menampilkan daftar seluruh siswa di rombel tersebut." },
+                    { title: "3. Isi Nilai Akhir (Skala 0–100)", text: "Ketikkan nilai akhir rapor masing-masing siswa dalam rentang angka 0 sampai 100." },
+                    { title: "4. Checklist Ketercapaian TP", text: "Centang TP yang dicapai paling optimal (kolom kiri) dan TP yang masih perlu pendampingan/peningkatan (kolom kanan), lalu klik Simpan Data Nilai." }
+                ],
+                visualType: "nilai-demo",
+                hasPracticeBtn: true
+            },
+            {
+                id: 14,
+                badge: "13 • PERAN 2: GURU MAPEL",
+                category: "Guru Mapel",
+                title: "Langkah 3 — Periksa dan Edit Deskripsi",
+                subtitle: "Sistem membentuk deskripsi otomatis dari TP yang dicentang; guru wajib memeriksanya.",
+                type: "standard",
+                points: [
+                    { title: "1. Klik 'Lihat dan Edit Deskripsi'", text: "Pada halaman form input nilai, klik tombol Lihat dan Edit Deskripsi." },
+                    { title: "2. Tinjau Capaian Tertinggi & Terendah", text: "Periksa kalimat deskripsi capaian tertinggi dan capaian terendah setiap siswa." },
+                    { title: "3. Sesuaikan Redaksi Kalimat", text: "Edit langsung jika ada susunan kata yang kurang tepat agar akurat menggambarkan kemampuan siswa." },
+                    { title: "4. Simpan Perubahan", text: "Klik Simpan Data Nilai. Jika menggunakan Import Excel, wajib memakai template format terbaru yang diunduh dari aplikasi." }
+                ],
+                visualType: "deskripsi-demo",
+                hasPracticeBtn: true
+            },
+            {
+                id: 15,
+                badge: "14 • PERAN 2: GURU MAPEL",
+                category: "Guru Mapel",
+                title: "Pemeriksaan Akhir Guru Mapel",
+                subtitle: "Selesaikan pekerjaan mapel sebelum wali kelas melakukan finalisasi dan cetak rapor.",
+                type: "checklist-slide",
+                items: [
+                    "Pastikan daftar Tujuan Pembelajaran (TP) untuk mapel sudah tersedia, aktif, dan sesuai kaidah penulisan.",
+                    "Pastikan nilai akhir seluruh siswa pada setiap kelas/mapel sudah terisi lengkap (tidak ada yang kosong).",
+                    "Pastikan deskripsi capaian tertinggi dan terendah setiap siswa sudah diperiksa.",
+                    "Pastikan tombol Simpan sudah diklik dan status pekerjaan di Dashboard Guru berubah menjadi 'Sudah dikerjakan'.",
+                    "Segera koordinasikan dengan Administrator/Operator jika ada siswa atau kelas yang tidak muncul."
+                ],
+                visualType: "guru-finish",
+                hasPracticeBtn: true
+            },
+            {
+                id: 16,
+                badge: "15 • PERAN 3: WALI KELAS",
+                category: "Wali Kelas",
+                title: "Menu dan Tanggung Jawab Wali Kelas",
+                subtitle: "Guru dengan tugas tambahan wali kelas memperoleh grup 'MENU WALI KELAS' saat login.",
+                type: "standard",
+                points: [
+                    { title: "1. Input Kelengkapan Rapor", text: "Update data pelengkap siswa, input rekap kehadiran per semester, kelola nilai ekskul, dan catatan wali kelas." },
+                    { title: "2. Input Kenaikan Kelas (Semester Genap)", text: "Menginput status naik/tinggal kelas pada akhir semester genap sesuai hasil rapat dewan guru." },
+                    { title: "3. Cek Penilaian & Perkembangan Nilai", text: "Memantau progres input nilai dari seluruh guru mapel di kelas binaannya serta melihat grafik perkembangan." },
+                    { title: "4. Cetak Nilai & Buku Induk", text: "Mengunduh leger nilai siswa, mencetak pelengkap rapor, serta mencetak/generate PDF nilai rapor siswa." }
+                ],
+                visualType: "walas-menu",
+                hasPracticeBtn: true
+            },
+            {
+                id: 17,
+                badge: "16 • PERAN 3: WALI KELAS",
+                category: "Wali Kelas",
+                title: "Langkah 1 — Periksa Data Siswa",
+                subtitle: "Data pokok siswa bersumber dari Dapodik; e-Rapor menyediakan penyesuaian data pelengkap tertentu.",
+                type: "standard",
+                points: [
+                    { title: "1. Buka Update Data Siswa", text: "Klik menu Wali Kelas: Input Kelengkapan → Update Data Siswa." },
+                    { title: "2. Periksa Detail Siswa", text: "Gunakan tombol Opsi → Detail pada baris siswa untuk memverifikasi biodata lengkap." },
+                    { title: "3. Edit Data Pelengkap", text: "Gunakan Opsi → Edit untuk melengkapi bagian tertentu (seperti status dalam keluarga, anak ke, sekolah asal, tanggal diterima, alamat/telepon ortu/wali)." },
+                    { title: "4. Simpan Perubahan", text: "Klik Simpan. Ingat: perubahan nama, NISN, atau tempat/tanggal lahir wajib dilakukan melalui Dapodik." }
+                ],
+                visualType: "walas-siswa"
+            },
+            {
+                id: 18,
+                badge: "17 • PERAN 3: WALI KELAS",
+                category: "Wali Kelas",
+                title: "Langkah 2 — Input Kehadiran",
+                subtitle: "Rekap ketidakhadiran selama satu semester ditampilkan pada halaman rapor siswa.",
+                type: "standard",
+                points: [
+                    { title: "1. Buka Input Kehadiran", text: "Pilih menu Input Kelengkapan → Input Kehadiran." },
+                    { title: "2. Pilih Kelas Binaan", text: "Pilih nama kelas untuk menampilkan tabel rekap absensi seluruh siswa." },
+                    { title: "3. Isi Jumlah Ketidakhadiran", text: "Masukkan angka ketidakhadiran pada kolom Sakit, Izin, dan Tanpa Keterangan (Alpa)." },
+                    { title: "4. Periksa & Simpan", text: "Teliti kembali kesesuaian angka per siswa berdasarkan buku absensi kelas, lalu klik Simpan Data." }
+                ],
+                visualType: "walas-absen"
+            },
+            {
+                id: 19,
+                badge: "18 • PERAN 3: WALI KELAS",
+                category: "Wali Kelas",
+                title: "Langkah 3 — Nilai Ekstrakurikuler",
+                subtitle: "Wali kelas mengisi predikat dan deskripsi ekstrakurikuler sesuai penilaian pembina.",
+                type: "standard",
+                points: [
+                    { title: "1. Buka Input Nilai Ekskul", text: "Buka menu Input Kelengkapan → Input Nilai Ekskul dan pilih kelas." },
+                    { title: "2. Pilih Kegiatan Ekskul", text: "Pilih kegiatan ekstrakurikuler yang diikuti siswa sesuai form yang tersedia." },
+                    { title: "3. Isi Predikat & Deskripsi", text: "Masukkan predikat nilai ekskul dan ketik deskripsi capaian kompetensi siswa, lalu klik Simpan." },
+                    { title: "4. Solusi Jika Siswa Tidak Tampil", text: "Jika daftar anggota ekskul kosong, koordinasikan dengan Operator Dapodik agar anggota ekskul diinput di Dapodik lalu ditarik ulang." }
+                ],
+                visualType: "walas-ekskul"
+            },
+            {
+                id: 20,
+                badge: "19 • PERAN 3: WALI KELAS",
+                category: "Wali Kelas",
+                title: "Langkah 4 — Catatan Wali Kelas",
+                subtitle: "Catatan berisi motivasi dan perkembangan siswa berdasarkan pengamatan wali kelas.",
+                type: "standard",
+                points: [
+                    { title: "1. Buka Input Catatan Walas", text: "Pilih menu Input Kelengkapan → Input Catatan Walas." },
+                    { title: "2. Pilih Kelas", text: "Tentukan kelas yang diampu untuk memunculkan kolom catatan setiap siswa." },
+                    { title: "3. Tulis Catatan Konstruktif", text: "Ketik catatan perkembangan sikap, kedisiplinan, atau motivasi belajar untuk masing-masing siswa." },
+                    { title: "4. Kalimat Faktual & Jelas", text: "Gunakan bahasa yang santun, faktual, dan membangun sebagai komunikasi sekolah dengan orang tua, lalu klik Simpan Data." }
+                ],
+                visualType: "walas-catatan"
+            },
+            {
+                id: 21,
+                badge: "20 • PERAN 3: WALI KELAS",
+                category: "Wali Kelas",
+                title: "Langkah 5 — Input Kenaikan Kelas",
+                subtitle: "Khusus dilakukan pada akhir semester genap setiap tahun ajaran.",
+                type: "standard",
+                points: [
+                    { title: "1. Buka Input Kenaikan Kelas", text: "Klik Input Kelengkapan → Input Kenaikan Kelas (aktif pada semester genap)." },
+                    { title: "2. Pilih Kelas", text: "Pilih rombongan belajar yang diampu." },
+                    { title: "3. Tetapkan Status Kenaikan", text: "Lengkapi status kenaikan setiap siswa (Naik ke Kelas / Tinggal di Kelas / Lulus) sesuai keputusan rapat pleno." },
+                    { title: "4. Verifikasi & Simpan", text: "Periksa kembali status tiap siswa dengan teliti, kemudian klik Simpan Data." }
+                ],
+                visualType: "walas-kenaikan"
+            },
+            {
+                id: 22,
+                badge: "21 • PERAN 3: WALI KELAS",
+                category: "Wali Kelas",
+                title: "Langkah 6 — Cetak dan Periksa Rapor",
+                subtitle: "Cetak nilai rapor dilakukan setelah seluruh input mapel dan kelengkapan wali kelas selesai.",
+                type: "standard",
+                points: [
+                    { title: "1. Cek Kelengkapan Seluruh Mapel", text: "Buka Cek Penilaian Kelas → Cek Status Penilaian Guru untuk memastikan 100% mapel sudah terisi." },
+                    { title: "2. Buka Menu Cetak Nilai", text: "Pilih Cetak Nilai → Cetak Nilai Rapor (atau Buku Induk & TNR untuk Transkrip), lalu pilih kelas." },
+                    { title: "3. Atur Layout & Tanda Tangan", text: "Sesuaikan ukuran kertas (A4/F4), margin atas/bawah/kiri/kanan, serta opsi tampilan tanda tangan." },
+                    { title: "4. Generate PDF & Verifikasi", text: "Klik Generate Rapor Kelas ini (PDF per siswa) atau Cetak Langsung, lalu periksa hasil PDF sebelum dicetak fisik." }
+                ],
+                visualType: "walas-cetak"
+            },
+            {
+                id: 23,
+                badge: "22 • KOORDINASI TIM",
+                category: "Koordinasi & Tips",
+                title: "Titik Serah-Terima Antarperan",
+                subtitle: "Gunakan daftar kontrol interaktif ini saat rapat persiapan dan penutupan nilai.",
+                type: "team-matrix"
+            },
+            {
+                id: 24,
+                badge: "23 • CATATAN PENTING",
+                category: "Koordinasi & Tips",
+                title: "Kesalahan yang Perlu Dihindari",
+                subtitle: "Kebiasaan sederhana untuk menjaga data rapor SMPN 2 Serang Baru tetap akurat.",
+                type: "donts",
+                rules: [
+                    { bad: "Mengubah data master Dapodik hanya di e-Rapor", good: "Selalu lakukan koreksi data pokok siswa/PTK/rombel di sumbernya (Dapodik), lalu tarik ulang." },
+                    { bad: "Mengisi nilai mapel atas nama guru mapel lain", good: "Input nilai dan deskripsi kompetensi wajib dilakukan oleh guru mapel pengampu masing-masing." },
+                    { bad: "Lupa menekan tombol Simpan setelah mengedit", good: "Pastikan selalu klik Simpan Data dan cek notifikasi sukses sebelum berpindah halaman." },
+                    { bad: "Mencetak rapor sebelum semua nilai & kelengkapan masuk", good: "Pastikan progres guru mapel & wali kelas 100% selesai sebelum generate PDF rapor." },
+                    { bad: "Tidak melakukan backup data berkala", good: "Administrator wajib melakukan backup database secara rutin melalui menu Backup & Restore." }
+                ]
+            },
+            {
+                id: 25,
+                badge: "24 • RINGKASAN PENUTUP",
+                category: "Penutup",
+                title: "Data Benar → Nilai Lengkap → Rapor Siap Dibagikan",
+                subtitle: "Terima kasih atas kerja sama seluruh Tim Pelaksana e-Rapor SMP Negeri 2 Serang Baru.",
+                type: "closing"
+            }
+        ];
+
+        // State
+        let currentSlideIndex = 0;
+        let checkedState = {};
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", () => {
+            renderSidebarList();
+            renderSlide(0);
+
+            // Keyboard navigation
+            document.addEventListener("keydown", (e) => {
+                if (!document.getElementById("live-app-modal").classList.contains("hidden")) {
+                    if (e.key === "Escape") closeLiveAppModal();
+                    return;
+                }
+                if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") {
+                    if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
+                        e.preventDefault();
+                        nextSlide();
+                    }
+                } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+                    e.preventDefault();
+                    prevSlide();
+                } else if (e.key.toLowerCase() === "f") {
+                    toggleFullscreen();
+                }
+            });
+        });
+
+        // ==========================================
+        // SIDEBAR & NAVIGATION LOGIC
+        // ==========================================
+        function renderSidebarList() {
+            const listEl = document.getElementById("slide-list");
+            listEl.innerHTML = slidesData.map((s, idx) => `
+                <button onclick="goToSlide(${idx})" id="nav-item-${idx}"
+                    class="w-full text-left px-3 py-2 rounded-xl flex items-start gap-2.5 transition ${idx === currentSlideIndex ? 'bg-blue-700 text-white font-semibold shadow-sm' : 'hover:bg-slate-100 text-slate-700'}">
+                    <span class="shrink-0 w-5 h-5 rounded-md text-[10px] font-bold flex items-center justify-center mt-0.5 ${idx === currentSlideIndex ? 'bg-amber-400 text-blue-950' : 'bg-slate-200 text-slate-600'}">
+                        ${idx + 1}
+                    </span>
+                    <div class="overflow-hidden">
+                        <div class="truncate">${s.title}</div>
+                        <div class="text-[10px] opacity-75 truncate">${s.category}</div>
+                    </div>
+                </button>
+            `).join("");
+        }
+
+        function goToSlide(index) {
+            if (index < 0 || index >= slidesData.length) return;
+            currentSlideIndex = index;
+            renderSlide(index);
+            updateUIControls();
+            // Tutup sidebar otomatis setelah memilih slide
+            closeSidebar();
+        }
+
+        function jumpToSection(index) {
+            goToSlide(index);
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < slidesData.length - 1) {
+                goToSlide(currentSlideIndex + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 0) {
+                goToSlide(currentSlideIndex - 1);
+            }
+        }
+
+        function toggleSidebar() {
+            const sb = document.getElementById("sidebar");
+            const backdrop = document.getElementById("sidebar-backdrop");
+            const isClosed = sb.classList.contains("-translate-x-full");
+            if (isClosed) {
+                sb.classList.remove("-translate-x-full");
+                backdrop.classList.remove("hidden");
+            } else {
+                closeSidebar();
+            }
+        }
+
+        function closeSidebar() {
+            const sb = document.getElementById("sidebar");
+            const backdrop = document.getElementById("sidebar-backdrop");
+            sb.classList.add("-translate-x-full");
+            backdrop.classList.add("hidden");
+        }
+
+        function updateUIControls() {
+            const total = slidesData.length;
+            const current = currentSlideIndex + 1;
+            const pct = Math.round((current / total) * 100);
+
+            document.getElementById("progress-bar").style.width = `${pct}%`;
+            document.getElementById("slide-counter").textContent = `Slide ${current} / ${total}`;
+            document.getElementById("slide-category-label").textContent = slidesData[currentSlideIndex].category;
+
+            document.getElementById("btn-prev").disabled = currentSlideIndex === 0;
+            document.getElementById("btn-next").disabled = currentSlideIndex === total - 1;
+
+            // Update sidebar active state
+            slidesData.forEach((_, idx) => {
+                const el = document.getElementById(`nav-item-${idx}`);
+                if (!el) return;
+                if (idx === currentSlideIndex) {
+                    el.className = "w-full text-left px-3 py-2 rounded-xl flex items-start gap-2.5 transition bg-blue-700 text-white font-semibold shadow-sm";
+                    el.querySelector("span").className = "shrink-0 w-5 h-5 rounded-md text-[10px] font-bold flex items-center justify-center mt-0.5 bg-amber-400 text-blue-950";
+                    el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                } else {
+                    el.className = "w-full text-left px-3 py-2 rounded-xl flex items-start gap-2.5 transition hover:bg-slate-100 text-slate-700";
+                    el.querySelector("span").className = "shrink-0 w-5 h-5 rounded-md text-[10px] font-bold flex items-center justify-center mt-0.5 bg-slate-200 text-slate-600";
+                }
+            });
+
+            // Update top role filter highlight
+            const tabs = ["tab-all", "tab-op", "tab-guru", "tab-walas", "tab-tim"];
+            tabs.forEach(t => {
+                const btn = document.getElementById(t);
+                if (btn) btn.className = "px-3 py-1.5 rounded-lg text-blue-200 hover:text-white transition";
+            });
+            let activeTab = "tab-all";
+            if (currentSlideIndex >= 3 && currentSlideIndex <= 10) activeTab = "tab-op";
+            else if (currentSlideIndex >= 11 && currentSlideIndex <= 15) activeTab = "tab-guru";
+            else if (currentSlideIndex >= 16 && currentSlideIndex <= 22) activeTab = "tab-walas";
+            else if (currentSlideIndex >= 23) activeTab = "tab-tim";
+            const activeBtn = document.getElementById(activeTab);
+            if (activeBtn) activeBtn.className = "px-3 py-1.5 rounded-lg bg-blue-600 text-white shadow transition";
+        }
+
+        // ==========================================
+        // SLIDE RENDERER
+        // ==========================================
+        function renderSlide(index) {
+            const slide = slidesData[index];
+            const stage = document.getElementById("slide-stage");
+            const container = document.getElementById("slide-container");
+
+            // Atur ukuran & padding stage khusus untuk slide sampul agar tampil penuh 100% tanpa terpotong
+            if (slide.type === "cover") {
+                stage.className = "w-full flex-1 overflow-hidden p-0 sm:p-2 flex flex-col items-center justify-center bg-slate-900 relative";
+                container.className = "w-full h-full max-w-none bg-transparent rounded-none sm:rounded-2xl shadow-none border-0 overflow-hidden flex flex-col justify-center slide-enter";
+            } else {
+                stage.className = "w-full flex-1 overflow-y-auto p-3 sm:p-6 md:p-8 flex flex-col items-center justify-center bg-gradient-to-br from-slate-100 via-blue-50/40 to-slate-200 relative";
+                container.className = "w-full max-w-7xl bg-white rounded-3xl shadow-xl border border-slate-200/80 overflow-hidden min-h-[520px] flex flex-col justify-between slide-enter";
+            }
+
+            // Re-trigger animation
+            container.classList.remove("slide-enter");
+            void container.offsetWidth;
+            container.classList.add("slide-enter");
+
+            if (slide.type === "cover") {
+                container.innerHTML = renderCoverSlide(slide);
+            } else if (slide.type === "overview-cards") {
+                container.innerHTML = renderOverviewCardsSlide(slide);
+            } else if (slide.type === "roadmap") {
+                container.innerHTML = renderRoadmapSlide(slide);
+            } else if (slide.type === "comparison") {
+                container.innerHTML = renderComparisonSlide(slide);
+            } else if (slide.type === "checklist-slide") {
+                container.innerHTML = renderChecklistSlide(slide);
+            } else if (slide.type === "team-matrix") {
+                container.innerHTML = renderTeamMatrixSlide(slide);
+            } else if (slide.type === "donts") {
+                container.innerHTML = renderDontsSlide(slide);
+            } else if (slide.type === "closing") {
+                container.innerHTML = renderClosingSlide(slide);
+            } else {
+                container.innerHTML = renderStandardSlide(slide);
+            }
+        }
+
+        // 1. COVER SLIDE
+        function renderCoverSlide(slide) {
+            const bgUrl = "https://i.ibb.co.com/xqrw7gC2/2caca46c-4f08-4fcf-8ebf-fa6ad9cebdd0.png";
+            return `
+                <div class="relative w-full h-full flex items-center justify-center overflow-hidden bg-slate-900">
+                    <!-- Gambar Sampul Asli Utuh 100% Tanpa Terpotong (Rasio 16:9) -->
+                    <img src="${bgUrl}" alt="Sampul Sosialisasi e-Rapor SMP 2025.2"
+                        class="w-full h-full max-h-[calc(100vh-115px)] object-contain select-none">
+
+                    <!-- Tombol Aksi Ringkas di Pojok Kanan Bawah -->
+                    <div class="absolute bottom-3 right-3 sm:bottom-5 sm:right-6 z-10 flex flex-wrap items-center justify-end gap-2.5">
+                        <button onclick="openLiveAppModal()" class="bg-amber-400/95 hover:bg-amber-300 text-blue-950 font-bold px-3.5 py-2 rounded-xl shadow-xl border border-amber-200 flex items-center gap-2 text-xs transition transform active:scale-95">
+                            <i class="fas fa-laptop-code"></i>
+                            <span>Praktek e-Rapor (:8534)</span>
+                        </button>
+                        <button onclick="nextSlide()" class="bg-blue-950/90 hover:bg-blue-900 text-white font-bold px-4 py-2 rounded-xl shadow-xl border border-white/30 flex items-center gap-2 text-xs transition transform active:scale-95">
+                            <span>Mulai Presentasi</span>
+                            <i class="fas fa-arrow-right text-amber-300"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 2. OVERVIEW CARDS SLIDE
+        function renderOverviewCardsSlide(slide) {
+            return `
+                <div class="p-6 sm:p-10 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-blue-100 text-blue-800 font-bold text-xs px-3 py-1 rounded-full mb-3">${slide.badge}</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">${slide.title}</h2>
+                        <p class="text-slate-500 text-sm sm:text-base mt-1">${slide.subtitle}</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+                        ${slide.cards.map((c, i) => {
+                            const colors = {
+                                blue: "bg-blue-50 border-blue-200 text-blue-900 icon-bg-blue-600",
+                                amber: "bg-amber-50 border-amber-200 text-amber-950 icon-bg-amber-500",
+                                emerald: "bg-emerald-50 border-emerald-200 text-emerald-950 icon-bg-emerald-600"
+                            };
+                            const badgeColor = c.color === 'blue' ? 'bg-blue-600' : c.color === 'amber' ? 'bg-amber-500' : 'bg-emerald-600';
+                            const targetIdx = i === 0 ? 4 : i === 1 ? 11 : 16;
+                            return `
+                                <div onclick="goToSlide(${targetIdx})" class="cursor-pointer group rounded-3xl border-2 p-6 transition hover:-translate-y-1 hover:shadow-lg ${colors[c.color]} flex flex-col justify-between">
+                                    <div>
+                                        <div class="w-12 h-12 rounded-2xl ${badgeColor} text-white flex items-center justify-center text-xl mb-4 shadow">
+                                            <i class="fas ${c.icon}"></i>
+                                        </div>
+                                        <h3 class="text-lg font-extrabold mb-2">${c.role}</h3>
+                                        <p class="text-xs sm:text-sm opacity-85 leading-relaxed">${c.desc}</p>
+                                    </div>
+                                    <div class="mt-6 pt-3 border-t border-black/10 flex items-center justify-between text-xs font-bold">
+                                        <span>Lihat Langkah Kerja</span>
+                                        <i class="fas fa-arrow-right group-hover:translate-x-1 transition"></i>
+                                    </div>
+                                </div>
+                            `;
+                        }).join("")}
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
+                        <span><i class="fas fa-lightbulb text-amber-500 mr-1.5"></i> Klik salah satu kartu peran di atas untuk langsung melompat ke bagian alur kerjanya.</span>
+                        <span class="font-semibold text-blue-700">Edisi Praktis Tim Pelaksana e-Rapor</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 3. ROADMAP SLIDE
+        function renderRoadmapSlide(slide) {
+            return `
+                <div class="p-6 sm:p-10 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-blue-100 text-blue-800 font-bold text-xs px-3 py-1 rounded-full mb-3">${slide.badge}</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">${slide.title}</h2>
+                        <p class="text-slate-500 text-sm sm:text-base mt-1">${slide.subtitle}</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-6">
+                        ${slide.steps.map(st => `
+                            <div class="bg-slate-50 hover:bg-blue-50/70 border border-slate-200 hover:border-blue-300 rounded-2xl p-5 transition relative overflow-hidden">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="w-9 h-9 rounded-xl bg-blue-800 text-amber-300 font-black text-sm flex items-center justify-center shadow-sm">${st.num}</span>
+                                    <h3 class="font-extrabold text-slate-900 text-base">${st.title}</h3>
+                                </div>
+                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${st.desc}</p>
+                            </div>
+                        `).join("")}
+                    </div>
+
+                    <div class="bg-blue-900 text-white rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fas fa-sync-alt text-amber-400 text-lg"></i>
+                            <span>Alur bersifat <strong>sekuensial (berurutan)</strong>: Tahap 01–03 harus tuntas sebelum Guru & Wali Kelas mulai mengisi nilai.</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 4. COMPARISON SLIDE
+        function renderComparisonSlide(slide) {
+            return `
+                <div class="p-6 sm:p-10 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-blue-100 text-blue-800 font-bold text-xs px-3 py-1 rounded-full mb-3">${slide.badge}</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">${slide.title}</h2>
+                        <p class="text-slate-500 text-sm sm:text-base mt-1">${slide.subtitle}</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+                        <div class="bg-blue-50/80 border-2 border-blue-200 rounded-3xl p-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-xl bg-blue-700 text-white flex items-center justify-center"><i class="fas ${slide.leftIcon}"></i></div>
+                                <h3 class="text-lg font-extrabold text-blue-950">${slide.leftTitle}</h3>
+                            </div>
+                            <ul class="space-y-3 text-xs sm:text-sm text-slate-700">
+                                ${slide.leftItems.map(item => `
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fas fa-check-circle text-blue-600 mt-1"></i>
+                                        <span>${item}</span>
+                                    </li>
+                                `).join("")}
+                            </ul>
+                        </div>
+
+                        <div class="bg-indigo-50/80 border-2 border-indigo-200 rounded-3xl p-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-xl bg-indigo-700 text-white flex items-center justify-center"><i class="fas ${slide.rightIcon}"></i></div>
+                                <h3 class="text-lg font-extrabold text-indigo-950">${slide.rightTitle}</h3>
+                            </div>
+                            <ul class="space-y-3 text-xs sm:text-sm text-slate-700">
+                                ${slide.rightItems.map(item => `
+                                    <li class="flex items-start gap-2.5">
+                                        <i class="fas fa-check-circle text-indigo-600 mt-1"></i>
+                                        <span>${item}</span>
+                                    </li>
+                                `).join("")}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-300 text-amber-950 rounded-2xl p-4 text-xs sm:text-sm font-medium flex items-center gap-3">
+                        <i class="fas fa-exclamation-triangle text-amber-600 text-lg"></i>
+                        <span>${slide.note}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 5. CHECKLIST SLIDE (INTERACTIVE)
+        function renderChecklistSlide(slide) {
+            return `
+                <div class="p-6 sm:p-10 flex-1 flex flex-col justify-between">
+                    <div class="flex flex-wrap items-start justify-between gap-4">
+                        <div>
+                            <span class="inline-block bg-emerald-100 text-emerald-800 font-bold text-xs px-3 py-1 rounded-full mb-3">${slide.badge}</span>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">${slide.title}</h2>
+                            <p class="text-slate-500 text-sm sm:text-base mt-1">${slide.subtitle}</p>
+                        </div>
+                        ${slide.hasPracticeBtn ? `
+                            <button onclick="openLiveAppModal()" class="bg-amber-400 hover:bg-amber-300 text-blue-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow transition">
+                                <i class="fas fa-external-link-alt"></i> Cek Langsung di e-Rapor
+                            </button>
+                        ` : ''}
+                    </div>
+
+                    <div class="my-6 space-y-3">
+                        ${slide.items.map((item, idx) => {
+                            const key = `chk_${slide.id}_${idx}`;
+                            const isChecked = !!checkedState[key];
+                            return `
+                                <label onclick="toggleCheckItem('${key}')" class="cursor-pointer flex items-start gap-3.5 p-4 rounded-2xl border transition ${isChecked ? 'bg-emerald-50 border-emerald-300 text-emerald-950' : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-800'}">
+                                    <div class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition ${isChecked ? 'bg-emerald-600 text-white' : 'bg-white border-2 border-slate-300'}">
+                                        ${isChecked ? '<i class="fas fa-check text-xs"></i>' : ''}
+                                    </div>
+                                    <span class="text-xs sm:text-sm font-medium leading-relaxed ${isChecked ? 'line-through opacity-75' : ''}">${item}</span>
+                                </label>
+                            `;
+                        }).join("")}
+                    </div>
+
+                    <div class="text-xs text-slate-500 flex items-center justify-between border-t border-slate-100 pt-3">
+                        <span><i class="fas fa-hand-pointer text-blue-600 mr-1"></i> Klik setiap poin untuk menandai progres saat simulasi / rapat tim.</span>
+                        <span class="font-semibold text-emerald-700">Checklist Interaktif</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleCheckItem(key) {
+            checkedState[key] = !checkedState[key];
+            renderSlide(currentSlideIndex);
+        }
+
+        // 6. STANDARD SLIDE WITH VISUAL MOCKUP
+        function renderStandardSlide(slide) {
+            return `
+                <div class="p-6 sm:p-9 flex-1 flex flex-col justify-between">
+                    <div class="flex flex-wrap items-start justify-between gap-3 border-b border-slate-100 pb-4">
+                        <div>
+                            <span class="inline-block bg-blue-100 text-blue-800 font-bold text-xs px-3 py-1 rounded-full mb-2">${slide.badge}</span>
+                            <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900">${slide.title}</h2>
+                            <p class="text-slate-500 text-xs sm:text-sm mt-1">${slide.subtitle}</p>
+                        </div>
+                        ${slide.hasPracticeBtn ? `
+                            <button onclick="openLiveAppModal()" class="bg-blue-700 hover:bg-blue-800 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-md transition shrink-0">
+                                <i class="fas fa-play-circle text-amber-300"></i>
+                                <span>Praktek di e-Rapor</span>
+                            </button>
+                        ` : ''}
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 my-5 items-center">
+                        <!-- Left: Step-by-step Points -->
+                        <div class="lg:col-span-6 space-y-3">
+                            ${slide.points.map((pt, i) => `
+                                <div class="bg-slate-50 border border-slate-200/90 rounded-2xl p-3.5 hover:border-blue-300 transition">
+                                    <div class="font-bold text-xs sm:text-sm text-blue-900 flex items-center gap-2">
+                                        <span class="w-5 h-5 rounded-full bg-blue-700 text-white text-[10px] flex items-center justify-center shrink-0">${i + 1}</span>
+                                        <span>${pt.title}</span>
+                                    </div>
+                                    <p class="text-xs text-slate-600 mt-1 pl-7 leading-relaxed">${pt.text}</p>
+                                </div>
+                            `).join("")}
+                        </div>
+
+                        <!-- Right: Interactive UI / Diagram Mockup -->
+                        <div class="lg:col-span-6">
+                            ${renderVisualMockup(slide.visualType)}
+                        </div>
+                    </div>
+
+                    ${slide.note ? `
+                        <div class="bg-amber-50 border border-amber-200 rounded-2xl px-4 py-2.5 text-xs text-amber-900 flex items-center gap-2.5">
+                            <i class="fas fa-info-circle text-amber-600 shrink-0"></i>
+                            <span>${slide.note}</span>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // VISUAL MOCKUP GENERATOR (Matches Official Guide Screenshots)
+        function renderVisualMockup(type) {
+            switch (type) {
+                case "network":
+                    return `
+                        <div class="bg-slate-900 text-white rounded-3xl p-5 shadow-inner border border-slate-700">
+                            <div class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fas fa-network-wired"></i> Topologi Akses e-Rapor SMP
+                            </div>
+                            <div class="flex flex-col items-center space-y-3 text-xs">
+                                <div class="bg-blue-800 border border-blue-500 px-4 py-2.5 rounded-2xl text-center w-full">
+                                    <div class="font-bold text-white"><i class="fas fa-server mr-1.5 text-amber-300"></i>Komputer Server Sekolah (Dapodik + e-Rapor)</div>
+                                    <div class="text-[11px] text-blue-200 font-mono mt-0.5">Contoh Lokal: http://localhost:8534 | LAN: http://IP-Server:8534</div>
+                                </div>
+                                <div class="text-slate-400"><i class="fas fa-arrows-alt-v"></i> Jaringan LAN / WiFi Sekolah (Tanpa perlu install di tiap laptop)</div>
+                                <div class="grid grid-cols-3 gap-2 w-full text-center">
+                                    <div class="bg-slate-800 p-2.5 rounded-xl border border-slate-700">
+                                        <i class="fas fa-laptop text-emerald-400 text-lg mb-1"></i>
+                                        <div class="font-semibold">Admin</div>
+                                    </div>
+                                    <div class="bg-slate-800 p-2.5 rounded-xl border border-slate-700">
+                                        <i class="fas fa-laptop text-amber-400 text-lg mb-1"></i>
+                                        <div class="font-semibold">Guru Mapel</div>
+                                    </div>
+                                    <div class="bg-slate-800 p-2.5 rounded-xl border border-slate-700">
+                                        <i class="fas fa-laptop text-sky-400 text-lg mb-1"></i>
+                                        <div class="font-semibold">Wali Kelas</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                case "webservice-dapodik":
+                    return `
+                        <div class="bg-white border-2 border-slate-200 rounded-3xl overflow-hidden shadow-md">
+                            <div class="bg-slate-800 text-white px-4 py-2 text-xs font-bold flex items-center justify-between">
+                                <span><i class="fas fa-plug text-amber-400 mr-1.5"></i>Simulasi Web Service Dapodik</span>
+                                <span class="text-[10px] bg-emerald-600 px-2 py-0.5 rounded">Dapodik 2026</span>
+                            </div>
+                            <div class="p-4 space-y-3 text-xs">
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-500">Nama Aplikasi</label>
+                                        <input type="text" value="e-RaporSMP" readonly class="w-full bg-slate-100 border border-slate-300 rounded-lg px-2.5 py-1.5 font-mono text-slate-700">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-500">IP Address Server e-Rapor</label>
+                                        <input type="text" value="192.168.1.20" readonly class="w-full bg-slate-100 border border-slate-300 rounded-lg px-2.5 py-1.5 font-mono text-slate-700">
+                                    </div>
+                                </div>
+                                <div class="bg-amber-50 border border-amber-200 rounded-xl p-3">
+                                    <div class="text-[10px] font-bold text-amber-800 uppercase mb-1">Token / Key Otomatis Dapodik</div>
+                                    <div class="flex items-center justify-between gap-2">
+                                        <code class="bg-white border border-amber-300 px-3 py-1.5 rounded-lg font-mono text-sm font-bold text-slate-800 flex-1">pp4x3eeYlxPaO6O</code>
+                                        <button onclick="showToast('Token Webservice disalin!')" class="bg-purple-700 hover:bg-purple-800 text-white px-3 py-1.5 rounded-lg font-semibold">
+                                            <i class="fas fa-copy mr-1"></i> Salin Token
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                case "webservice-erapor":
+                case "ambil-data":
+                    return `
+                        <div class="bg-white border-2 border-blue-200 rounded-3xl overflow-hidden shadow-md">
+                            <div class="bg-blue-800 text-white px-4 py-2 text-xs font-bold flex items-center justify-between">
+                                <span>e-Rapor SMP | Administrator</span>
+                                <span class="text-[10px] bg-blue-950 px-2 py-0.5 rounded">2025/2026</span>
+                            </div>
+                            <div class="p-4 space-y-2.5 text-xs">
+                                <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg border">
+                                    <span class="text-slate-500">URL Dapodik:</span>
+                                    <span class="font-mono font-semibold">http://localhost:5774</span>
+                                </div>
+                                <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg border">
+                                    <span class="text-slate-500">Key Web Service:</span>
+                                    <span class="font-mono font-semibold">pp4x3eeYlxPaO6O</span>
+                                </div>
+                                <div class="pt-1 flex items-center justify-between gap-2">
+                                    <button onclick="showToast('Tes Koneksi: Sukses terhubung dengan Dapodik!')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-3 rounded-xl shadow-sm transition">
+                                        <i class="fas fa-check-circle mr-1.5"></i> Klik Simulasi Tes Koneksi & Ambil Data
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                case "sync-loop":
+                    return `
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-3xl p-6 text-center space-y-4">
+                            <div class="w-14 h-14 rounded-2xl bg-blue-700 text-white mx-auto flex items-center justify-center text-2xl shadow">
+                                <i class="fas fa-sync"></i>
+                            </div>
+                            <h4 class="font-extrabold text-blue-950 text-base">Alur Koreksi Data Master</h4>
+                            <div class="flex items-center justify-center gap-2 text-xs font-bold">
+                                <span class="bg-white border border-blue-300 px-3 py-2 rounded-xl text-blue-900">1. Edit di Dapodik</span>
+                                <i class="fas fa-arrow-right text-blue-500"></i>
+                                <span class="bg-white border border-blue-300 px-3 py-2 rounded-xl text-blue-900">2. Tarik Data e-Rapor</span>
+                                <i class="fas fa-arrow-right text-blue-500"></i>
+                                <span class="bg-emerald-600 text-white px-3 py-2 rounded-xl">3. Data Sinkron</span>
+                            </div>
+                        </div>
+                    `;
+
+                case "guru-dashboard":
+                    return `
+                        <div class="bg-white border-2 border-slate-200 rounded-3xl overflow-hidden shadow-md text-xs">
+                            <div class="bg-blue-800 text-white px-4 py-2.5 font-bold flex items-center justify-between">
+                                <span>STATUS KERJA GURU DAN WALI KELAS</span>
+                                <span class="bg-amber-400 text-blue-950 px-2 py-0.5 rounded font-extrabold">Dashboard Guru</span>
+                            </div>
+                            <div class="p-3 space-y-2">
+                                <div class="flex items-center justify-between p-2 rounded-lg bg-emerald-50 border border-emerald-200">
+                                    <span>1. Input Tujuan Pembelajaran</span>
+                                    <span class="bg-emerald-600 text-white px-2 py-0.5 rounded font-bold text-[10px]">✓ Sudah dikerjakan</span>
+                                </div>
+                                <div class="flex items-center justify-between p-2 rounded-lg bg-rose-50 border border-rose-200">
+                                    <span>2. Input Nilai Mata Pelajaran</span>
+                                    <span class="bg-rose-600 text-white px-2 py-0.5 rounded font-bold text-[10px]">✕ Belum dikerjakan</span>
+                                </div>
+                                <div class="flex items-center justify-between p-2 rounded-lg bg-rose-50 border border-rose-200">
+                                    <span>3. Input Data Rekap Kehadiran Siswa</span>
+                                    <span class="bg-rose-600 text-white px-2 py-0.5 rounded font-bold text-[10px]">✕ Belum dikerjakan</span>
+                                </div>
+                                <button onclick="openLiveAppModal()" class="w-full mt-2 bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 rounded-xl transition">
+                                    Buka Dashboard Asli (:8534/dashboard/guru)
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                case "tp-demo":
+                    return `
+                        <div class="bg-white border-2 border-slate-200 rounded-3xl overflow-hidden shadow-md text-xs">
+                            <div class="bg-blue-800 text-white px-4 py-2.5 font-bold">
+                                Contoh Format Penulisan TP (Tanpa "Peserta didik dapat")
+                            </div>
+                            <div class="p-4 space-y-3">
+                                <div class="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-900">
+                                    <div class="font-bold text-[11px] uppercase text-rose-600 mb-0.5"><i class="fas fa-times-circle mr-1"></i>Kurang Tepat:</div>
+                                    <div class="italic">"Peserta didik dapat menjelaskan hubungan antara bilangan bulat positif dan negatif."</div>
+                                </div>
+                                <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-950">
+                                    <div class="font-bold text-[11px] uppercase text-emerald-700 mb-0.5"><i class="fas fa-check-circle mr-1"></i>Benar (Diawali huruf kecil):</div>
+                                    <div class="font-semibold">"menjelaskan hubungan antara bilangan bulat positif dan bilangan bulat negatif"</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                case "nilai-demo":
+                case "deskripsi-demo":
+                    return `
+                        <div class="bg-white border-2 border-slate-200 rounded-3xl overflow-hidden shadow-md text-xs">
+                            <div class="bg-blue-800 text-white px-4 py-2.5 font-bold flex justify-between">
+                                <span>Simulasi Input Nilai & Checklist TP</span>
+                                <span class="text-amber-300">Skala 0–100</span>
+                            </div>
+                            <div class="p-4 space-y-3">
+                                <div class="flex items-center justify-between border-b pb-2">
+                                    <div>
+                                        <div class="font-bold text-slate-900">BAYUNUGRAHA PADMANA EMTIN</div>
+                                        <div class="text-[10px] text-slate-500">NISN: 0128348410</div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-slate-500 font-semibold">Nilai:</span>
+                                        <span class="bg-blue-50 border border-blue-300 font-black text-blue-900 px-3 py-1 rounded-lg text-sm">89</span>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-[11px]">
+                                    <div class="bg-emerald-50 border border-emerald-200 p-2 rounded-xl">
+                                        <div class="font-bold text-emerald-800 mb-1">☑ TP Tercapai Optimal</div>
+                                        <p class="text-slate-600">Memodelkan & menjelaskan variabel, konstanta, suku...</p>
+                                    </div>
+                                    <div class="bg-amber-50 border border-amber-200 p-2 rounded-xl">
+                                        <div class="font-bold text-amber-800 mb-1">☑ TP Perlu Peningkatan</div>
+                                        <p class="text-slate-600">Menentukan hasil operasi hitung dalam soal kontekstual...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                default:
+                    return `
+                        <div class="bg-gradient-to-br from-slate-800 to-blue-950 text-white rounded-3xl p-6 shadow-lg space-y-4">
+                            <div class="flex items-center justify-between border-b border-white/15 pb-3">
+                                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Menu Wali Kelas e-Rapor 2025.2</span>
+                                <i class="fas fa-folder-open text-blue-300"></i>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2.5 text-xs">
+                                <div class="bg-white/10 p-3 rounded-xl border border-white/10"><i class="fas fa-user-edit text-amber-300 mr-1.5"></i>Update Data Siswa</div>
+                                <div class="bg-white/10 p-3 rounded-xl border border-white/10"><i class="fas fa-calendar-check text-emerald-300 mr-1.5"></i>Input Kehadiran</div>
+                                <div class="bg-white/10 p-3 rounded-xl border border-white/10"><i class="fas fa-medal text-sky-300 mr-1.5"></i>Input Nilai Ekskul</div>
+                                <div class="bg-white/10 p-3 rounded-xl border border-white/10"><i class="fas fa-comment-dots text-purple-300 mr-1.5"></i>Catatan Walas</div>
+                                <div class="bg-white/10 p-3 rounded-xl border border-white/10"><i class="fas fa-level-up-alt text-rose-300 mr-1.5"></i>Kenaikan Kelas</div>
+                                <div class="bg-white/10 p-3 rounded-xl border border-white/10"><i class="fas fa-print text-amber-400 mr-1.5"></i>Cetak Nilai Rapor</div>
+                            </div>
+                            <button onclick="openLiveAppModal()" class="w-full bg-amber-400 hover:bg-amber-300 text-blue-950 font-bold py-2.5 rounded-xl text-xs transition shadow">
+                                <i class="fas fa-external-link-alt mr-1.5"></i> Praktekkan Menu Ini di e-Rapor
+                            </button>
+                        </div>
+                    `;
+            }
+        }
+
+        // 7. TEAM MATRIX SLIDE
+        function renderTeamMatrixSlide(slide) {
+            const groups = [
+                {
+                    title: "OPERATOR / ADMIN",
+                    color: "blue",
+                    tasks: ["Data Dapodik lengkap", "Webservice tes koneksi berhasil", "Data berhasil ditarik", "Referensi & akun siap"]
+                },
+                {
+                    title: "GURU MAPEL",
+                    color: "amber",
+                    tasks: ["TP tersedia & aktif", "Nilai seluruh siswa tersimpan", "Deskripsi capaian diperiksa", "Status kerja dashboard selesai"]
+                },
+                {
+                    title: "WALI KELAS",
+                    color: "emerald",
+                    tasks: ["Data pelengkap siswa dicek", "Kehadiran & ekskul tersimpan", "Catatan & kenaikan kelas terisi", "PDF Rapor diperiksa & dicetak"]
+                }
+            ];
+
+            return `
+                <div class="p-6 sm:p-10 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-indigo-100 text-indigo-800 font-bold text-xs px-3 py-1 rounded-full mb-3">${slide.badge}</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">${slide.title}</h2>
+                        <p class="text-slate-500 text-sm sm:text-base mt-1">${slide.subtitle}</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 my-6">
+                        ${groups.map((g, gIdx) => {
+                            const headerBg = g.color === 'blue' ? 'bg-blue-800' : g.color === 'amber' ? 'bg-amber-500 text-blue-950' : 'bg-emerald-700';
+                            return `
+                                <div class="border-2 border-slate-200 rounded-3xl overflow-hidden bg-white shadow-sm flex flex-col">
+                                    <div class="${headerBg} text-white px-4 py-3 font-extrabold text-sm text-center">
+                                        ${g.title}
+                                    </div>
+                                    <div class="p-4 space-y-2.5 flex-1">
+                                        ${g.tasks.map((t, tIdx) => {
+                                            const k = `mat_${gIdx}_${tIdx}`;
+                                            const chk = !!checkedState[k];
+                                            return `
+                                                <div onclick="toggleCheckItem('${k}')" class="cursor-pointer flex items-center gap-2.5 p-2.5 rounded-xl border text-xs font-medium transition ${chk ? 'bg-emerald-50 border-emerald-300 text-emerald-900' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'}">
+                                                    <i class="fas ${chk ? 'fa-check-square text-emerald-600' : 'fa-square text-slate-300'} text-base"></i>
+                                                    <span class="${chk ? 'line-through opacity-75' : ''}">${t}</span>
+                                                </div>
+                                            `;
+                                        }).join("")}
+                                    </div>
+                                </div>
+                            `;
+                        }).join("")}
+                    </div>
+
+                    <div class="text-xs text-slate-500 text-center">
+                        Klik kotak centang di atas untuk mengevaluasi kesiapan tim sekolah saat ini.
+                    </div>
+                </div>
+            `;
+        }
+
+        // 8. DONTS / CATATAN PENTING SLIDE
+        function renderDontsSlide(slide) {
+            return `
+                <div class="p-6 sm:p-10 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-rose-100 text-rose-800 font-bold text-xs px-3 py-1 rounded-full mb-3">${slide.badge}</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">${slide.title}</h2>
+                        <p class="text-slate-500 text-sm sm:text-base mt-1">${slide.subtitle}</p>
+                    </div>
+
+                    <div class="space-y-3 my-5">
+                        ${slide.rules.map(r => `
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm">
+                                <div class="flex items-start gap-2.5 text-rose-800 font-semibold">
+                                    <i class="fas fa-times-circle text-rose-600 mt-0.5 text-base"></i>
+                                    <span>Jangan: ${r.bad}</span>
+                                </div>
+                                <div class="flex items-start gap-2.5 text-emerald-900 font-medium md:border-l md:border-slate-200 md:pl-3">
+                                    <i class="fas fa-check-circle text-emerald-600 mt-0.5 text-base"></i>
+                                    <span>Solusi: ${r.good}</span>
+                                </div>
+                            </div>
+                        `).join("")}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 9. CLOSING SLIDE
+        function renderClosingSlide(slide) {
+            return `
+                <div class="bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-950 text-white p-8 sm:p-12 flex-1 flex flex-col items-center justify-center text-center space-y-6">
+                    <div class="w-16 h-16 rounded-3xl bg-amber-400 text-blue-950 flex items-center justify-center text-3xl font-black shadow-lg">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="space-y-2 max-w-3xl">
+                        <span class="text-amber-300 font-bold text-xs uppercase tracking-widest">${slide.badge}</span>
+                        <h2 class="text-2xl sm:text-4xl font-black leading-tight">${slide.title}</h2>
+                        <p class="text-blue-200 text-sm sm:text-base pt-2">${slide.subtitle}</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl text-left text-xs">
+                        <div class="bg-white/10 border border-white/15 p-4 rounded-2xl">
+                            <div class="font-bold text-amber-300 mb-1">1. Operator & Admin</div>
+                            <p class="text-blue-100">Memastikan sumber data Dapodik akurat dan koneksi Webservice lancar.</p>
+                        </div>
+                        <div class="bg-white/10 border border-white/15 p-4 rounded-2xl">
+                            <div class="font-bold text-amber-300 mb-1">2. Guru Mapel</div>
+                            <p class="text-blue-100">Bertanggung jawab penuh atas entri TP, nilai akhir, dan deskripsi mapel.</p>
+                        </div>
+                        <div class="bg-white/10 border border-white/15 p-4 rounded-2xl">
+                            <div class="font-bold text-amber-300 mb-1">3. Wali Kelas</div>
+                            <p class="text-blue-100">Melengkapi data kelas, kehadiran, ekskul, catatan, dan mencetak rapor.</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex flex-wrap items-center justify-center gap-3">
+                        <a href="http://localhost:8534/dashboard/guru" target="_blank" rel="noopener noreferrer" class="bg-amber-400 hover:bg-amber-300 text-blue-950 font-extrabold px-6 py-3.5 rounded-2xl shadow-xl flex items-center gap-2.5 text-sm transition transform hover:scale-105">
+                            <i class="fas fa-rocket"></i>
+                            <span>Mulai Praktek: http://localhost:8534/dashboard/guru</span>
+                        </a>
+                        <button onclick="goToSlide(0)" class="bg-white/15 hover:bg-white/25 text-white font-semibold px-5 py-3.5 rounded-2xl text-sm transition">
+                            <i class="fas fa-redo mr-1.5"></i> Kembali ke Awal
+                        </button>
+                    </div>
+
+                    <div class="text-xs text-blue-300 pt-2">
+                        Husni Amaruloh, S.TP. • SMP Negeri 2 Serang Baru • Kabupaten Bekasi
+                    </div>
+                </div>
+            `;
+        }
+
+        // ==========================================
+        // LIVE E-RAPOR APP MODAL & UTILITIES
+        // ==========================================
+        const ERAPOR_URL = "http://localhost:8534/dashboard/guru";
+
+        function openLiveAppModal() {
+            const modal = document.getElementById("live-app-modal");
+            const iframe = document.getElementById("erapor-iframe");
+            iframe.src = ERAPOR_URL;
+            modal.classList.remove("hidden");
+        }
+
+        function closeLiveAppModal() {
+            const modal = document.getElementById("live-app-modal");
+            modal.classList.add("hidden");
+        }
+
+        function reloadIframe() {
+            const iframe = document.getElementById("erapor-iframe");
+            iframe.src = ERAPOR_URL;
+            showToast("Memuat ulang http://localhost:8534/dashboard/guru ...");
+        }
+
+        function copyEraporUrl() {
+            const tempInput = document.createElement("input");
+            tempInput.value = ERAPOR_URL;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showToast("Alamat disalin: " + ERAPOR_URL);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            document.getElementById("toast-msg").textContent = message;
+            toast.classList.remove("translate-y-20", "opacity-0");
+            setTimeout(() => {
+                toast.classList.add("translate-y-20", "opacity-0");
+            }, 2800);
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+                document.getElementById("fs-icon").className = "fas fa-compress";
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    document.getElementById("fs-icon").className = "fas fa-expand";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
